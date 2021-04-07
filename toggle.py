@@ -3,6 +3,8 @@ import gi
 import os
 import yaml
 
+from toast import show_toast
+
 # Specify the Gdk version before importing it.
 gi.require_version("Gdk", "3.0")
 
@@ -41,7 +43,9 @@ def get_monitors():
 def get_connected_monitors():
     """This method calls xrandr to return a list of connected monitors"""
     out = os.popen("xrandr").readlines()
-    connected = list(filter(lambda s: " connected " in s, out))
+    connected = list(
+        map(lambda x: x.split(" ")[0], filter(lambda s: " connected " in s, out))
+    )
     return connected
 
 
@@ -107,31 +111,27 @@ def toggle():
     """Toggle checks monitor configurations and sets the desired monitor
     setting"""
 
-    monitors = get_monitors()
+    active_monitors = get_monitors()
+    connected_monitors = get_connected_monitors()
     # conf = check_config_file()
     # layout = get_layout_from_config(conf)
 
-    if len(monitors) == 1:
-        if monitors[0]["screen"] == PRIMARY_SCREEN_NAME:
-            toggle_primary_resolution(monitors[0])
+    secondary = list(filter(lambda m: m != PRIMARY_SCREEN_NAME, connected_monitors))[0]
 
-        elif monitors[0]["screen"] != PRIMARY_SCREEN_NAME:
-            toggle_primary()
-
-        # save_current_layout(conf, monitors[0])
-    else:
-        secondary = list(
-            filter(lambda m: m["screen"] != PRIMARY_SCREEN_NAME, monitors)
-        )[0]
-
-        if monitors[0]["screen"] == PRIMARY_SCREEN_NAME:
+    if len(connected_monitors) > 1 and len(active_monitors) == 1:
+        if active_monitors[0]["screen"] == PRIMARY_SCREEN_NAME:
             toggle_secondary(secondary)
             turn_off(PRIMARY_SCREEN_NAME)
+            show_toast("Monitor")
 
-        elif monitors[0]["screen"] != PRIMARY_SCREEN_NAME:
+        elif active_monitors[0]["screen"] != PRIMARY_SCREEN_NAME:
             toggle_primary()
-            turn_off(secondary["screen"])
+            turn_off(secondary)
+            show_toast("Laptop")
+    else:
+        toggle_primary_resolution(active_monitors[0])
 
+    # save_current_layout(conf, active_monitors[0])
     refresh_i3()
     return
 
