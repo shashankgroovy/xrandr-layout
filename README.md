@@ -1,5 +1,7 @@
 # xrandr layout
 
+![python shield](https://img.shields.io/github/pipenv/locked/python-version/shashankgroovy/xrandr-layout?color=%231DB954&style=flat-square)
+
 A simple utility script that works with [xrandr](https://wiki.archlinux.org/index.php/xrandr) to change/switch between different layouts.
 
 For now it works with my Arch installation with one external monitor setup with i3wm.
