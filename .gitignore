@@ -1,0 +1,17 @@
+# Project
+layout.yaml
+layout.yml
+*.sh
+
+# Vim
+*.sw[op]
+
+# virtualenv
+env/
+
+# Python
+__py_cache__/
+*.py[cod]
+
+# Pip
+pip-log.txt
