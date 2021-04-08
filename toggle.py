@@ -113,12 +113,11 @@ def toggle():
 
     active_monitors = get_monitors()
     connected_monitors = get_connected_monitors()
-    # conf = check_config_file()
-    # layout = get_layout_from_config(conf)
-
-    secondary = list(filter(lambda m: m != PRIMARY_SCREEN_NAME, connected_monitors))[0]
+    # cfile = config_exists()
+    # conf = get_config_layout(cfile)
 
     if len(connected_monitors) > 1 and len(active_monitors) == 1:
+        secondary = list(filter(lambda m: m != PRIMARY_SCREEN_NAME, connected_monitors))[0]
         if active_monitors[0]["screen"] == PRIMARY_SCREEN_NAME:
             toggle_secondary(secondary)
             turn_off(PRIMARY_SCREEN_NAME)
@@ -131,7 +130,7 @@ def toggle():
     else:
         toggle_primary_resolution(active_monitors[0])
 
-    # save_current_layout(conf, active_monitors[0])
+    # save_config(cfile, conf)
     refresh_i3()
     return
 
