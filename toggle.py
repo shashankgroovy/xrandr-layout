@@ -132,13 +132,12 @@ def toggle():
 
     # save_config(cfile, conf)
     refresh_i3()
-    return
 
 
-def toggle_primary_resolution(m):
+def toggle_primary_resolution(monitor):
     """Change the resolution of primary display"""
 
-    if m["width"] != 1920 and m["height"] != 1200:
+    if monitor["width"] != 1920 and monitor["height"] != 1200:
         set_resolution(PRIMARY_SCREEN_NAME, 1920, 1200)
     else:
         set_resolution(PRIMARY_SCREEN_NAME, 2560, 1600)
@@ -169,6 +168,7 @@ def turn_off(screen):
 
 
 def refresh_i3():
+    """Reload i3's config"""
     os.system("i3-msg restart")
 
 
